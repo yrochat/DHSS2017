@@ -1,0 +1,432 @@
+---
+title: 'DHSS: An Introduction to R for Digital Historians'
+author: "Yannick Rochat"
+date: "20 June 2017"
+output:
+  ioslides_presentation: default
+  html_notebook: default
+---
+
+
+# Basic examples
+
+----
+
+
+
+```{r}
+4 + 3 # Calcul de base
+```
+
+----
+
+```{r}
+2^2 + 3*4
+7 %% 2
+14 < 17
+10 < 8 && 2 == 2
+```
+
+----
+
+```{r}
+z = 12.5
+z <- 12.5
+z
+
+z = 12.5
+y = 7.5
+z + y
+
+```
+
+----
+
+
+```{r}
+sqrt(4)
+y = sqrt(2)
+y
+
+ls()
+rm(y)
+
+```
+
+----
+
+```{r}
+
+#q() ## exit R
+typeof(z)
+help(exp)
+?exp
+help.search("linear model")
+
+```
+
+
+
+# Graphics (examples)
+
+----
+
+```{r}
+plot(cars)
+```
+
+----
+
+```{r}
+library(ggplot2)
+ggplot(diamonds, aes(x = carat, y = price)) + 
+  geom_point(aes(color = clarity))
+```
+
+
+
+# Commands
+
+
+---- 
+
+There are five types :
+
+* data
+* operators
+* variables
+* functions
+* keywords
+
+----
+
+
+
+
+### Numeric
+
+```{r}
+example(integer)
+```
+
+
+----
+
+```{r eval = FALSE}
+?double
+?numeric
+```
+
+----
+
+
+### Characters
+
+
+```{r}
+b <- "unil"
+c <- "patient 1"
+nchar(b)
+nchar(c)
+paste(b, c, collapse = "")
+```
+
+
+----
+
+### Logical elements
+
+* TRUE et FALSE
+
+and also…
+
+* NA, NaN
+* Inf
+
+----
+
+```{r}
+1/0
+x <- Inf
+x - x
+```
+
+"NA" means "Not available".
+
+"NaN" means "Not a Number".
+
+
+
+
+
+# Operators
+
+----
+
+### Arithmetic operators
+
+* \+ 
+* \- 
+* \* 
+* / 
+* ˆ 
+* %% 
+* %/% 
+* %*% 
+
+----
+
+
+### Operators for comparisons
+
+
+```{r error = TRUE}
+1 == 1
+1 == 2
+1 != 1 
+1 != 2
+1 < 1
+1 <= 1
+```
+
+----
+
+### Logical operators
+
+```{r}
+a <- (1 < 2)
+a
+!a
+```
+
+----
+
+```{r}
+b <- (2 > 3)
+a & b
+a | b
+```
+
+
+## How to know the type of data ?
+
+```{r}
+a <- 1
+b <- 1:5
+class(a)
+class(b)
+```
+
+----
+
+```{r}
+c <- "hello"
+d <- 1 > 2
+class(c)
+class(d)
+```
+
+----
+
+What are their sizes ?
+
+```{r}
+length(a)
+length(b)
+length(c)
+length(d)
+```
+
+----
+
+`str` gives a description.
+
+```{r}
+str(a)
+str(b)
+str(c)
+str(d)
+```
+
+
+## Variables
+
+Here, a and b are variables.
+
+```{r}
+a <- 1
+b <- 2
+a + b
+```
+
+
+----
+
+`=`, `<-` and `->` are assignement operators. They are used to save data.
+
+```{r eval = FALSE}
+?'<-'
+```
+
+
+# Classes
+
+* Vectors
+* Lists
+* Matrices
+* Tables
+* Data frames
+
+
+## Vectors
+
+
+```{r}
+x <- c(5,4,5,6,7,8) 
+x
+x_char = c("a","b","c") 
+x_char
+```
+
+----
+
+Access elements of a vector
+
+```{r}
+x
+x[2]
+x[c(2,4)]
+x[c(-2,-4)]
+```
+
+
+----
+
+Manipulate them…
+
+```{r}
+x[6] = 10
+x
+a = c(3,4,5,6)
+a[c(2,3)] = 0
+a
+a[c(2,3)] = c(8,7)
+a
+```
+
+----
+
+```{r}
+c(1,2,3) + c(3,4,5)
+```
+
+----
+
+```{r}
+4 * c(1,2,3)
+c(2,5) < 4
+```
+
+----
+
+```{r}
+c(1,2) + c(3,4,5,6)
+```
+
+----
+
+… but watch out.
+
+```{r}
+c(1,2) + c(2,3,4)
+```
+
+
+
+## Data frames
+
+----
+
+* Write in R console: `help(package="magrittr")`
+* Choose "User guides, package vignettes and other documentation."
+* Open the vignette magrittr::magrittr
+
+The following example is taken from there.
+
+----
+
+```{r}
+library(magrittr)
+```
+
+----
+
+
+```{r}
+  mtcars %>%
+  subset(hp > 100) %>%
+  aggregate(. ~ cyl, data = ., FUN = . %>% mean %>% round(2)) %>%
+  transform(kpl = mpg %>% multiply_by(0.4251)) %>%
+  print
+```
+
+----
+
+```{r}
+mtcars
+```
+
+----
+
+```{r}
+mtcars %>%
+  subset(hp > 100)
+```
+
+----
+
+```{r}
+mtcars %>%
+  subset(hp > 100) %>%
+  aggregate(. ~ cyl, data = ., FUN = . %>% mean %>% round(2))
+```
+
+----
+
+```{r}
+  mtcars %>%
+  subset(hp > 100) %>%
+  aggregate(. ~ cyl, data = ., FUN = . %>% mean %>% round(2)) %>%
+  transform(kpl = mpg %>% multiply_by(0.4251))
+
+```
+
+----
+
+```{r}
+  mtcars %>%
+  subset(hp > 100) %>%
+  aggregate(. ~ cyl, data = ., FUN = . %>% mean %>% round(2)) %>%
+  transform(kpl = mpg %>% multiply_by(0.4251)) %>%
+  print
+
+```
+
+----
+
+```{r}
+car_data <-  
+  mtcars %>%
+  subset(hp > 100) %>%
+  aggregate(. ~ cyl, data = ., FUN = . %>% mean %>% round(2)) %>%
+  transform(kpl = mpg %>% multiply_by(0.4251)) %>%
+  print
+
+```
+
+----
+
+```{r}
+car_data
+```
+
